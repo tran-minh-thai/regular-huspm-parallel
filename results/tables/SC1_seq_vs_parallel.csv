@@ -1,0 +1,10 @@
+dataset,algorithm,time_ms,peak_MB,patterns,speedup_vs_RHusp
+BIBLE,RHusp_seq,2333,472,574,1.0
+BIBLE,Prop_seq,1855,391,574,1.26
+BIBLE,Prop_par,301,439,574,7.75
+FIFA,RHusp_seq,330330,4935,123,1.0
+FIFA,Prop_seq,164526,4935,123,2.01
+FIFA,Prop_par,25869,4938,123,12.77
+LEVIATHAN,RHusp_seq,182,248,240,1.0
+LEVIATHAN,Prop_seq,155,55,240,1.17
+LEVIATHAN,Prop_par,31,87,240,5.87
