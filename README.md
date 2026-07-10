@@ -65,34 +65,37 @@ event and `-2` closes the sequence:
 3:3
 ```
 
-The `_seq.txt` and `_eui.txt` files of every dataset are committed, so the experiments run without
-any preparation. The raw SPMF sequence files they were derived from are **not** redistributed here,
-because they are freely available from the SPMF site. To regenerate the quantitative files, download
-the originals, place them in `datasets/` under the names `BIBLE.txt`, `BMS1.txt`,
-`C8T1S5I8N5K.txt`, `FIFA.txt`, `KOSARAK.txt`, `LEVIATHAN.txt` and `SIGN.txt`, then run:
+Only the small datasets are committed: `SIGN`, `LEVIATHAN`, `BMS1` and the eight-sequence running
+example `paper`. Together they occupy about four megabytes, and they are enough to run the quick
+suite and both correctness checks straight after a clone. The four large ones, `BIBLE`, `FIFA`,
+`KOSARAK` and `C8T1S5I8N5K`, are **not** redistributed here, and neither are the raw SPMF files any
+of them derive from, because everything is freely available from the SPMF site.
+
+To obtain the missing datasets, download the raw sequence files, place them in `datasets/` under
+the names `BIBLE.txt`, `FIFA.txt`, `KOSARAK.txt` and `C8T1S5I8N5K.txt`, then run the converter:
 
 ```
 java -cp out SPMF_Converter
 ```
 
-The converter skips any name it does not find, so a partial download is fine. The SPMF files
-contain sequences only; the converter adds the quantitative part. Internal utilities are drawn from
-a weighted mixture (70 % in 1-2, 20 % in 3-5, 10 % in 6-10) and external utilities from a log-normal
-distribution (mu = 2.5, sigma = 1.0) clamped to [1, 1000]. The generator is seeded with 42, so it
-reproduces the committed `_seq.txt` and `_eui.txt` byte for byte.
+It skips any name it does not find, so a partial download is fine. The SPMF files contain sequences
+only; the converter adds the quantitative part. Internal utilities are drawn from a weighted mixture
+(70 % in 1-2, 20 % in 3-5, 10 % in 6-10) and external utilities from a log-normal distribution
+(mu = 2.5, sigma = 1.0) clamped to [1, 1000]. The generator is seeded with 42, so it reproduces the
+exact files used for the reported results, byte for byte.
 
 The datasets used in the paper, with the thresholds applied to them. `delta` is the utility
 threshold as a fraction of the total database utility, `rho` the regularity threshold as a
 fraction of the number of sequences.
 
-| Dataset   | File prefix   | Sequences | Distinct items | Avg. length | delta (%) | rho (%) |
-| --------- | ------------- | --------: | -------------: | ----------: | --------: | ------: |
-| SIGN      | `SIGN`        |       730 |            267 |       52.00 |     2.000 |     2.0 |
-| LEVIATHAN | `LEVIATHAN`   |     5,834 |          9,025 |       33.81 |     0.150 |     1.0 |
-| FIFA      | `FIFA`        |    20,450 |          2,990 |       36.24 |     4.000 |     5.0 |
-| BIBLE     | `BIBLE`       |    36,369 |         13,905 |       21.64 |     1.000 |     2.0 |
-| SYN       | `C8T1S5I8N5K` |    47,133 |         68,240 |       18.83 |     0.002 |    10.0 |
-| KOSARAK   | `KOSARAK`     |   990,002 |         41,270 |        8.10 |     1.000 |     0.5 |
+| Dataset   | File prefix   | Sequences | Distinct items | Avg. length | delta (%) | rho (%) | Shipped   |
+| --------- | ------------- | --------: | -------------: | ----------: | --------: | ------: | --------- |
+| SIGN      | `SIGN`        |       730 |            267 |       52.00 |     2.000 |     2.0 | yes       |
+| LEVIATHAN | `LEVIATHAN`   |     5,834 |          9,025 |       33.81 |     0.150 |     1.0 | yes       |
+| FIFA      | `FIFA`        |    20,450 |          2,990 |       36.24 |     4.000 |     5.0 | regenerate |
+| BIBLE     | `BIBLE`       |    36,369 |         13,905 |       21.64 |     1.000 |     2.0 | regenerate |
+| SYN       | `C8T1S5I8N5K` |    47,133 |         68,240 |       18.83 |     0.002 |    10.0 | regenerate |
+| KOSARAK   | `KOSARAK`     |   990,002 |         41,270 |        8.10 |     1.000 |     0.5 | regenerate |
 
 SYN is stored under its original SPMF name `C8T1S5I8N5K`. Scenario SC6 raises `delta` on BIBLE,
 LEVIATHAN and SIGN, because the HUSP result set of the AHUS-P baseline explodes at the thresholds
@@ -119,6 +122,10 @@ find src -name '*.java' -print0 | xargs -0 javac -d out
 ./run_full.sh SC2 SC6      # run only the named scenarios
 ./run_full.sh test         # quick suite, small parameters
 ```
+
+The quick suite and the two correctness checks run on the datasets that ship with the repository.
+The full suite additionally needs `BIBLE`, `FIFA`, `KOSARAK` and `C8T1S5I8N5K`, so regenerate those
+first as described above; a scenario whose dataset is missing is skipped with a message on stderr.
 
 The sweep of the granularity threshold is a separate launcher:
 
@@ -243,7 +250,7 @@ the speedups and the relative comparisons do not.
 ## Data sources
 
 The five real datasets come from the SPMF library, <https://philippe-fournier-viger.com/spmf/>.
-The synthetic dataset SYN (`C8T1S5I8N5K`) is distributed by the same project. Only the generated
-quantitative files are kept in this repository; the original sequence files are left to be
-downloaded from the link above. Utility values are not part of those datasets and are produced
-locally by `SPMF_Converter`.
+The synthetic dataset SYN (`C8T1S5I8N5K`) is distributed by the same project. Neither the raw
+sequence files nor the four large generated ones are redistributed here, since both are reachable
+from the link above and the generator is deterministic. Utility values are not part of the original
+datasets; they are produced locally by `SPMF_Converter` with a fixed seed.
