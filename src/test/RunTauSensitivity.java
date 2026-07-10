@@ -50,7 +50,12 @@ public class RunTauSensitivity {
 
         PrintWriter csv = new PrintWriter(new FileWriter(resultsDir + "/FULL_SC7_TauSensitivity.csv"), true);
         PrintWriter sum = new PrintWriter(new FileWriter(resultsDir + "/FULL_SC7_TauSensitivity.txt"), true);
+        // One row per measured iteration, as the other scenarios do. A summary that keeps only the
+        // median and the extremes cannot be reworked later: (max-min) is decided by a single outlier,
+        // so the raw times are needed to compute a robust statistic such as the interquartile range.
+        PrintWriter raw = new PrintWriter(new FileWriter(resultsDir + "/FULL_SC7_TauRaw.csv"), true);
         csv.println("dataset,su,reg,threads,tau,median_ms,min_ms,max_ms,spread_pct,patterns,peak_MB");
+        raw.println("dataset,su,reg,threads,tau,iteration,runtime_ms,patterns,peak_MB");
 
         System.out.printf("[SC7] tau sensitivity | T=%d | warmup=%d measure=%d (median) | taus=%s%n",
                 T, warmup, iters, Arrays.toString(TAUS));
@@ -78,6 +83,7 @@ public class RunTauSensitivity {
                 for (int it = 0; it < iters; it++) {
                     double[] r = runOnce(seq, eui, resultsDir, ds, su, reg, T, tau);
                     times[it] = (long) r[0]; pat = r[1]; mem = r[2];
+                    raw.printf("%s,%s,%s,%d,%d,%d,%.0f,%.0f,%.0f%n", ds, su, reg, T, tau, it + 1, r[0], r[1], r[2]);
                 }
                 Arrays.sort(times);
                 double m = times[iters / 2];
@@ -103,7 +109,8 @@ public class RunTauSensitivity {
         }
         csv.close();
         sum.close();
-        System.out.println("\n[SC7 DONE] -> results/FULL_SC7_TauSensitivity.{csv,txt}");
+        raw.close();
+        System.out.println("\n[SC7 DONE] -> results/FULL_SC7_TauSensitivity.{csv,txt}, results/FULL_SC7_TauRaw.csv");
     }
 
     /** One measured run of Proposed-par with a given tau; returns {runtime_ms, patterns, peak_MB}. */

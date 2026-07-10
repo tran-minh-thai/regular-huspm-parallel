@@ -34,6 +34,9 @@ bin/
 ### Per-run pattern dumps written by the miners (regenerable) ###
 results/*_patterns.txt
 
+### Manual backups taken before a re-run ###
+results/*.bak
+
 ### Large generated datasets. They are not redistributed here: download the raw SPMF
 ### files into datasets/ and run SPMF_Converter, which reproduces them byte for byte.
 datasets/BIBLE_seq.txt

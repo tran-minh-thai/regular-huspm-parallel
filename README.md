@@ -189,13 +189,19 @@ pruned_tier2_la_peu, pruned_node_cond, pruned_tier3_reg
 kept on purpose, so the run-to-run dispersion can be recovered from these files rather than being
 lost inside a median.
 
-`FULL_SC7_TauSensitivity.csv` already aggregates, one row per value of tau:
+The tau sweep writes two files. `FULL_SC7_TauSensitivity.csv` aggregates, one row per value of tau:
 
 ```
 dataset, su, reg, threads, tau, median_ms, min_ms, max_ms, spread_pct, patterns, peak_MB
 ```
 
-`spread_pct` is `(max - min) / median`, expressed as a percentage.
+`spread_pct` is `(max - min) / median`, expressed as a percentage. It is decided by a single
+outlier, so `FULL_SC7_TauRaw.csv` keeps every measured iteration as well, from which a robust
+statistic such as the interquartile range can be computed afterwards:
+
+```
+dataset, su, reg, threads, tau, iteration, runtime_ms, patterns, peak_MB
+```
 
 `FULL_summary.txt` repeats the medians, speedups and efficiencies printed during the run.
 
