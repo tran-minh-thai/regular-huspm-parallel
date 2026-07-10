@@ -125,7 +125,11 @@ The sweep of the granularity threshold is a separate launcher:
 ```
 java -Xms8g -Xmx24g -Xss64m -cp out test.RunTauSensitivity              # all four datasets
 java -Xms8g -Xmx24g -Xss64m -cp out test.RunTauSensitivity BIBLE FIFA   # a subset
+SC7_ITERS=11 java ... test.RunTauSensitivity LEVIATHAN                  # more runs, tighter spread
 ```
+
+`SC7_ITERS` sets the number of measured runs and defaults to three. Datasets whose runtime is only
+a few tens of milliseconds sit at the resolution of the timer, so raise it for those.
 
 The JVM options default to `-Xms8g -Xmx24g -Xss64m` and can be overridden. On a machine with less
 memory, lower `-Xmx`; FIFA and SYN need roughly 5 GB and 8 GB of heap respectively.
@@ -134,8 +138,8 @@ memory, lower `-Xmx`; FIFA and SYN need roughly 5 GB and 8 GB of heap respective
 JVM_OPTS="-Xms2g -Xmx8g -Xss64m" ./run_full.sh SC2
 ```
 
-Three more environment variables are honoured: `RUN_TAG` renames the result files, `SC2_DS` and
-`SC5_DS` restrict those two scenarios to a single dataset.
+Three more environment variables are honoured by the suite: `RUN_TAG` renames the result files, and
+`SC2_DS` and `SC5_DS` restrict those two scenarios to a single dataset.
 
 Every configuration is warmed up once and then measured three times; the median is reported.
 Loading the data is excluded from the measured runtime. The peak heap is read through `MemMeter`,
@@ -171,13 +175,17 @@ pruned_tier2_la_peu, pruned_node_cond, pruned_tier3_reg
 ```
 
 `status` is `SUCCESS`, `TIMEOUT`, `OOM` or `ERROR`; only `SUCCESS` rows should be aggregated.
-`su` and `reg` are the ratios `delta` and `rho`, not absolute thresholds.
+`su` and `reg` are the ratios `delta` and `rho`, not absolute thresholds. One row per iteration is
+kept on purpose, so the run-to-run dispersion can be recovered from these files rather than being
+lost inside a median.
 
-`FULL_SC7_TauSensitivity.csv` already stores medians, one row per value of tau:
+`FULL_SC7_TauSensitivity.csv` already aggregates, one row per value of tau:
 
 ```
-dataset, su, reg, threads, tau, median_ms, patterns, peak_MB
+dataset, su, reg, threads, tau, median_ms, min_ms, max_ms, spread_pct, patterns, peak_MB
 ```
+
+`spread_pct` is `(max - min) / median`, expressed as a percentage.
 
 `FULL_summary.txt` repeats the medians, speedups and efficiencies printed during the run.
 

@@ -27,7 +27,10 @@ public class RunTauSensitivity {
 
     public static void main(String[] args) throws Exception {
         int T = Runtime.getRuntime().availableProcessors();
-        int warmup = 1, iters = 3;
+        int warmup = 1;
+        // Datasets whose runtime is only a few tens of milliseconds sit at the resolution of the
+        // timer; raise SC7_ITERS to tighten the reported spread on those.
+        int iters = Integer.parseInt(System.getenv().getOrDefault("SC7_ITERS", "3"));
         String resultsDir = "results";
         new File(resultsDir).mkdirs();
 
@@ -47,7 +50,7 @@ public class RunTauSensitivity {
 
         PrintWriter csv = new PrintWriter(new FileWriter(resultsDir + "/FULL_SC7_TauSensitivity.csv"), true);
         PrintWriter sum = new PrintWriter(new FileWriter(resultsDir + "/FULL_SC7_TauSensitivity.txt"), true);
-        csv.println("dataset,su,reg,threads,tau,median_ms,patterns,peak_MB");
+        csv.println("dataset,su,reg,threads,tau,median_ms,min_ms,max_ms,spread_pct,patterns,peak_MB");
 
         System.out.printf("[SC7] tau sensitivity | T=%d | warmup=%d measure=%d (median) | taus=%s%n",
                 T, warmup, iters, Arrays.toString(TAUS));
@@ -63,7 +66,8 @@ public class RunTauSensitivity {
             double su = all.get(ds)[0], reg = all.get(ds)[1];
             System.out.printf("%n>>> %s (su=%s reg=%s)%n", ds, su, reg);
             sum.printf("%n%s (su=%s reg=%s)%n", ds, su, reg);
-            sum.printf("%-6s %-12s %-10s %-8s%n", "tau", "median_ms", "patterns", "peak_MB");
+            sum.printf("%-6s %-12s %-9s %-9s %-11s %-10s %-8s%n",
+                    "tau", "median_ms", "min_ms", "max_ms", "spread_pct", "patterns", "peak_MB");
 
             Map<Integer, Double> med = new LinkedHashMap<>();
             double pat = -1;
@@ -77,10 +81,13 @@ public class RunTauSensitivity {
                 }
                 Arrays.sort(times);
                 double m = times[iters / 2];
+                long lo = times[0], hi = times[iters - 1];
+                double spread = (m > 0) ? (hi - lo) / m * 100.0 : 0.0;
                 med.put(tau, m);
-                csv.printf("%s,%s,%s,%d,%d,%.0f,%.0f,%.0f%n", ds, su, reg, T, tau, m, pat, mem);
-                sum.printf("%-6d %-12.0f %-10.0f %-8.0f%n", tau, m, pat, mem);
-                System.out.printf("   tau=%-4d | median=%8.0f ms | patterns=%.0f | peak=%.0f MB%n", tau, m, pat, mem);
+                csv.printf("%s,%s,%s,%d,%d,%.0f,%d,%d,%.1f,%.0f,%.0f%n", ds, su, reg, T, tau, m, lo, hi, spread, pat, mem);
+                sum.printf("%-6d %-12.0f %-9d %-9d %-11.1f %-10.0f %-8.0f%n", tau, m, lo, hi, spread, pat, mem);
+                System.out.printf("   tau=%-4d | median=%8.0f ms [%d..%d, spread %.1f%%] | patterns=%.0f | peak=%.0f MB%n",
+                        tau, m, lo, hi, spread, pat, mem);
             }
 
             // deviation vs tau=64 across the claimed band [32,128] and the full sweep
