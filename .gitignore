@@ -33,3 +33,14 @@ bin/
 
 ### Per-run pattern dumps written by the miners (regenerable) ###
 results/*_patterns.txt
+
+### Large generated datasets. They are not redistributed here: download the raw SPMF
+### files into datasets/ and run SPMF_Converter, which reproduces them byte for byte.
+datasets/BIBLE_seq.txt
+datasets/BIBLE_eui.txt
+datasets/FIFA_seq.txt
+datasets/FIFA_eui.txt
+datasets/KOSARAK_seq.txt
+datasets/KOSARAK_eui.txt
+datasets/C8T1S5I8N5K_seq.txt
+datasets/C8T1S5I8N5K_eui.txt
