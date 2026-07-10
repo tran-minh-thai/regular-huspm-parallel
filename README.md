@@ -65,14 +65,21 @@ event and `-2` closes the sequence:
 3:3
 ```
 
-The SPMF benchmark files contain sequences only. `SPMF_Converter` adds the quantitative part:
-internal utilities are drawn from a weighted mixture (70 % in 1-2, 20 % in 3-5, 10 % in 6-10) and
-external utilities from a log-normal distribution (mu = 2.5, sigma = 1.0) clamped to [1, 1000].
-The generator is seeded with 42, so the same input always yields the same output:
+The `_seq.txt` and `_eui.txt` files of every dataset are committed, so the experiments run without
+any preparation. The raw SPMF sequence files they were derived from are **not** redistributed here,
+because they are freely available from the SPMF site. To regenerate the quantitative files, download
+the originals, place them in `datasets/` under the names `BIBLE.txt`, `BMS1.txt`,
+`C8T1S5I8N5K.txt`, `FIFA.txt`, `KOSARAK.txt`, `LEVIATHAN.txt` and `SIGN.txt`, then run:
 
 ```
 java -cp out SPMF_Converter
 ```
+
+The converter skips any name it does not find, so a partial download is fine. The SPMF files
+contain sequences only; the converter adds the quantitative part. Internal utilities are drawn from
+a weighted mixture (70 % in 1-2, 20 % in 3-5, 10 % in 6-10) and external utilities from a log-normal
+distribution (mu = 2.5, sigma = 1.0) clamped to [1, 1000]. The generator is seeded with 42, so it
+reproduces the committed `_seq.txt` and `_eui.txt` byte for byte.
 
 The datasets used in the paper, with the thresholds applied to them. `delta` is the utility
 threshold as a fraction of the total database utility, `rho` the regularity threshold as a
@@ -228,5 +235,7 @@ the speedups and the relative comparisons do not.
 ## Data sources
 
 The five real datasets come from the SPMF library, <https://philippe-fournier-viger.com/spmf/>.
-The synthetic dataset SYN (`C8T1S5I8N5K`) is distributed by the same project. Utility values are
-not part of those datasets and are generated locally by `SPMF_Converter`.
+The synthetic dataset SYN (`C8T1S5I8N5K`) is distributed by the same project. Only the generated
+quantitative files are kept in this repository; the original sequence files are left to be
+downloaded from the link above. Utility values are not part of those datasets and are produced
+locally by `SPMF_Converter`.
