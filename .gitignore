@@ -31,8 +31,5 @@ bin/
 ### Mac OS ###
 .DS_Store
 
-### Tooling ###
-.claude/
-
 ### Per-run pattern dumps written by the miners (regenerable) ###
 results/*_patterns.txt
