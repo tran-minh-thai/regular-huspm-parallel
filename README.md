@@ -123,6 +123,9 @@ find src -name '*.java' -print0 | xargs -0 javac -d out
 ./run_full.sh test         # quick suite, small parameters
 ```
 
+On a filesystem that does not preserve the executable bit, such as a synchronised cloud folder,
+invoke the script as `bash run_full.sh` instead.
+
 The quick suite and the two correctness checks run on the datasets that ship with the repository.
 The full suite additionally needs `BIBLE`, `FIFA`, `KOSARAK` and `C8T1S5I8N5K`, so regenerate those
 first as described above; a scenario whose dataset is missing is skipped with a message on stderr.
