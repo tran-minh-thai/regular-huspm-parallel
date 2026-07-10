@@ -1,0 +1,108 @@
+== [FULL] SC1 Sequential vs Parallel (T_par=10) ==
+dataset        algo             time_ms    peak_MB    mẫu     
+BIBLE          RHusp_seq        2333       473        574     
+BIBLE          Proposed_seq     1855       392        574     
+BIBLE          Proposed_par     301        440        574     
+FIFA           RHusp_seq        330330     4935       123     
+FIFA           Proposed_seq     164526     4936       123     
+FIFA           Proposed_par     25869      4939       123     
+LEVIATHAN      RHusp_seq        182        248        240     
+LEVIATHAN      Proposed_seq     155        55         240     
+LEVIATHAN      Proposed_par     31         87         240     
+
+== [FULL] SC2 BIBLE (su=0.01 reg=0.02) ==
+T      median_ms    S_p      E_p     
+1      1849         1.000    1.000   
+2      997          1.855    0.927   
+4      470          3.934    0.984   
+8      336          5.503    0.688   
+10     298          6.205    0.620   
+
+== [FULL] SC2 FIFA (su=0.04 reg=0.05) ==
+T      median_ms    S_p      E_p     
+1      164464       1.000    1.000   
+2      85957        1.913    0.957   
+4      47193        3.485    0.871   
+8      30291        5.429    0.679   
+10     26051        6.313    0.631   
+
+== [FULL] SC2 LEVIATHAN (su=0.0015 reg=0.01) ==
+T      median_ms    S_p      E_p     
+1      160          1.000    1.000   
+2      92           1.739    0.870   
+4      57           2.807    0.702   
+8      38           4.211    0.526   
+10     34           4.706    0.471   
+
+== [FULL] SC2 C8T1S5I8N5K (su=2.0E-5 reg=0.1) ==
+T     median_ms   S_p     E_p
+1     6350        1.000   1.000
+2     3389        1.874   0.937
+4     1949        3.258   0.815
+8     1484        4.279   0.535
+10    1420        4.472   0.447
+
+== [FULL] SC4 preprocess KOSARAK ==
+T      median_ms    S_p      E_p     
+1      409          1.000    1.000   
+2      247          1.656    0.828   
+4      261          1.567    0.392   
+8      217          1.885    0.236   
+10     220          1.859    0.186   
+
+== [FULL] SC4 preprocess BIBLE ==
+T      median_ms    S_p      E_p     
+1      32           1.000    1.000   
+2      19           1.684    0.842   
+4      13           2.462    0.615   
+8      10           3.200    0.400   
+10     10           3.200    0.320   
+
+== [FULL] SC6 Proposed BIBLE ==
+T      median_ms    S_p      E_p     
+1      1054         1.000    1.000   
+2      552          1.909    0.955   
+4      294          3.585    0.896   
+8      205          5.141    0.643   
+10     176          5.989    0.599   
+
+== [FULL] SC6 AHUS-P BIBLE ==
+T      median_ms    S_p      E_p     
+1      2335         1.000    1.000   
+2      1208         1.933    0.966   
+4      640          3.648    0.912   
+8      429          5.443    0.680   
+10     383          6.097    0.610   
+
+== [FULL] SC6 Proposed LEVIATHAN ==
+T      median_ms    S_p      E_p     
+1      161          1.000    1.000   
+2      91           1.769    0.885   
+4      55           2.927    0.732   
+8      35           4.600    0.575   
+10     31           5.194    0.519   
+
+== [FULL] SC6 AHUS-P LEVIATHAN ==
+T      median_ms    S_p      E_p     
+1      16555        1.000    1.000   
+2      8399         1.971    0.986   
+4      4403         3.760    0.940   
+8      3194         5.183    0.648   
+10     2782         5.951    0.595   
+
+== [FULL] SC6 Proposed SIGN ==
+T      median_ms    S_p      E_p     
+1      38           1.000    1.000   
+2      24           1.583    0.792   
+4      16           2.375    0.594   
+8      14           2.714    0.339   
+10     11           3.455    0.345   
+
+== [FULL] SC6 AHUS-P SIGN ==
+T      median_ms    S_p      E_p     
+1      4830         1.000    1.000   
+2      2385         2.025    1.013   
+4      1203         4.015    1.004   
+8      830          5.819    0.727   
+10     728          6.635    0.663   
+

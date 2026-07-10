@@ -1,0 +1,104 @@
+🚀 SUITE [FULL] — warmup=1, đo=3 (trung vị), maxThreads=10
+>>> Làm nóng JVM...
+
+>>> SC1: TUẦN TỰ vs SONG SONG (thời gian + bộ nhớ)...
+   BIBLE (su=0.01 reg=0.02)
+      RHusp-seq   :     2333 ms |     473 MB | mẫu=574
+      Proposed-seq:     1855 ms |     392 MB | mẫu=574
+      Proposed-par:      301 ms |     440 MB | mẫu=574 (vs RHusp 7.8x, vs Prop-seq 6.2x)
+   FIFA (su=0.04 reg=0.05)
+      RHusp-seq   :   330330 ms |    4935 MB | mẫu=123
+      Proposed-seq:   164526 ms |    4936 MB | mẫu=123
+      Proposed-par:    25869 ms |    4939 MB | mẫu=123 (vs RHusp 12.8x, vs Prop-seq 6.4x)
+   LEVIATHAN (su=0.0015 reg=0.01)
+      RHusp-seq   :      182 ms |     248 MB | mẫu=240
+      Proposed-seq:      155 ms |      55 MB | mẫu=240
+      Proposed-par:       31 ms |      87 MB | mẫu=240 (vs RHusp 5.9x, vs Prop-seq 5.0x)
+
+>>> SC2: TĂNG TỐC THEO SỐ LUỒNG (S_p, E_p)...
+   BIBLE (su=0.01 reg=0.02)
+      T=1  |     1849 ms | mẫu=574 | S_p=1.00 | E_p=1.00
+      T=2  |      997 ms | mẫu=574 | S_p=1.85 | E_p=0.93
+      T=4  |      470 ms | mẫu=574 | S_p=3.93 | E_p=0.98
+      T=8  |      336 ms | mẫu=574 | S_p=5.50 | E_p=0.69
+      T=10 |      298 ms | mẫu=574 | S_p=6.20 | E_p=0.62
+   FIFA (su=0.04 reg=0.05)
+      T=1  |   164464 ms | mẫu=123 | S_p=1.00 | E_p=1.00
+      T=2  |    85957 ms | mẫu=123 | S_p=1.91 | E_p=0.96
+      T=4  |    47193 ms | mẫu=123 | S_p=3.48 | E_p=0.87
+      T=8  |    30291 ms | mẫu=123 | S_p=5.43 | E_p=0.68
+      T=10 |    26051 ms | mẫu=123 | S_p=6.31 | E_p=0.63
+   LEVIATHAN (su=0.0015 reg=0.01)
+      T=1  |      160 ms | mẫu=240 | S_p=1.00 | E_p=1.00
+      T=2  |       92 ms | mẫu=240 | S_p=1.74 | E_p=0.87
+      T=4  |       57 ms | mẫu=240 | S_p=2.81 | E_p=0.70
+      T=8  |       38 ms | mẫu=240 | S_p=4.21 | E_p=0.53
+      T=10 |       34 ms | mẫu=240 | S_p=4.71 | E_p=0.47
+   C8T1S5I8N5K (su=2.0E-4 reg=0.05)
+      T=1  |       99 ms | mẫu=3033 | S_p=1.00 | E_p=1.00
+      T=2  |       68 ms | mẫu=3033 | S_p=1.46 | E_p=0.73
+      T=4  |       66 ms | mẫu=3033 | S_p=1.50 | E_p=0.38
+      T=8  |       89 ms | mẫu=3033 | S_p=1.11 | E_p=0.14
+      T=10 |      102 ms | mẫu=3033 | S_p=0.97 | E_p=0.10
+
+>>> SC3: ABLATION KỸ THUẬT SONG SONG...
+   BIBLE (su=0.01 reg=0.02), T=10
+      Seq_T1       |     1843 ms |     392 MB | mẫu=574 | S_p(vs Seq)=1.00
+      Static       |      855 ms |     440 MB | mẫu=574 | S_p(vs Seq)=2.16
+      Steal        |      938 ms |     440 MB | mẫu=574 | S_p(vs Seq)=1.96
+      RDLB_dense   |      296 ms |     424 MB | mẫu=574 | S_p(vs Seq)=6.23
+      RDLB_rawbuf  |      300 ms |     488 MB | mẫu=574 | S_p(vs Seq)=6.14
+   FIFA (su=0.04 reg=0.05), T=10
+      Seq_T1       |   168149 ms |    4936 MB | mẫu=123 | S_p(vs Seq)=1.00
+      Static       |    82845 ms |    4937 MB | mẫu=123 | S_p(vs Seq)=2.03
+      Steal        |    63140 ms |    4939 MB | mẫu=123 | S_p(vs Seq)=2.66
+      RDLB_dense   |    27311 ms |    4938 MB | mẫu=123 | S_p(vs Seq)=6.16
+      RDLB_rawbuf  |    26621 ms |    4945 MB | mẫu=123 | S_p(vs Seq)=6.32
+
+>>> SC4: TĂNG TỐC PHA TIỀN XỬ LÝ (SWU + EUCS) THEO SỐ LUỒNG...
+   KOSARAK (su=0.01 reg=0.005)
+      T=1  | preprocess     409 ms | S_p=1.00
+      T=2  | preprocess     247 ms | S_p=1.66
+      T=4  | preprocess     261 ms | S_p=1.57
+      T=8  | preprocess     217 ms | S_p=1.88
+      T=10 | preprocess     220 ms | S_p=1.86
+   BIBLE (su=0.01 reg=0.02)
+      T=1  | preprocess      32 ms | S_p=1.00
+      T=2  | preprocess      19 ms | S_p=1.68
+      T=4  | preprocess      13 ms | S_p=2.46
+      T=8  | preprocess      10 ms | S_p=3.20
+      T=10 | preprocess      10 ms | S_p=3.20
+
+>>> SC5: MỞ RỘNG THEO DỮ LIỆU (RHusp-seq vs Proposed-par, T=10)...
+   KOSARAK_20pct    | RHusp-seq      1416 ms | Proposed-par      113 ms (168 MB, mẫu=60) | gap=12.5x
+   KOSARAK_40pct    | RHusp-seq      7298 ms | Proposed-par      545 ms (376 MB, mẫu=61) | gap=13.4x
+   KOSARAK_60pct    | RHusp-seq     17834 ms | Proposed-par     1469 ms (683 MB, mẫu=62) | gap=12.1x
+   KOSARAK_80pct    | RHusp-seq     76950 ms | Proposed-par     2799 ms (974 MB, mẫu=61) | gap=27.5x
+   KOSARAK_100pct   | RHusp-seq    155285 ms | Proposed-par     4622 ms (1361 MB, mẫu=60) | gap=33.6x
+   C8T1S5I8N5K_20pct | RHusp-seq       150 ms | Proposed-par       80 ms (2374 MB, mẫu=1) | gap=1.9x
+   C8T1S5I8N5K_40pct | RHusp-seq       334 ms | Proposed-par       93 ms (2379 MB, mẫu=1) | gap=3.6x
+   C8T1S5I8N5K_60pct | RHusp-seq       726 ms | Proposed-par       90 ms (2383 MB, mẫu=1) | gap=8.1x
+   C8T1S5I8N5K_80pct | RHusp-seq      1012 ms | Proposed-par       93 ms (2387 MB, mẫu=851) | gap=10.9x
+   C8T1S5I8N5K_100pct | RHusp-seq      1968 ms | Proposed-par      113 ms (2472 MB, mẫu=18522) | gap=17.4x
+
+>>> SC6: ĐỐI CHỨNG VỚI AHUS-P...
+   BIBLE (su=0.02 reg=0.02)
+      T=1  | Proposed    1054ms (RHUSP=191, S_p=1.00) | AHUS-P     2335 ms (HUSP=201, S_p=1.00)
+      T=2  | Proposed     552ms (RHUSP=191, S_p=1.91) | AHUS-P     1208 ms (HUSP=201, S_p=1.93)
+      T=4  | Proposed     294ms (RHUSP=191, S_p=3.59) | AHUS-P      640 ms (HUSP=201, S_p=3.65)
+      T=8  | Proposed     205ms (RHUSP=191, S_p=5.14) | AHUS-P      429 ms (HUSP=201, S_p=5.44)
+      T=10 | Proposed     176ms (RHUSP=191, S_p=5.99) | AHUS-P      383 ms (HUSP=201, S_p=6.10)
+   LEVIATHAN (su=0.004 reg=0.01)
+      T=1  | Proposed     161ms (RHUSP=223, S_p=1.00) | AHUS-P    16555 ms (HUSP=584536, S_p=1.00)
+      T=2  | Proposed      91ms (RHUSP=223, S_p=1.77) | AHUS-P     8399 ms (HUSP=584536, S_p=1.97)
+      T=4  | Proposed      55ms (RHUSP=223, S_p=2.93) | AHUS-P     4403 ms (HUSP=584536, S_p=3.76)
+      T=8  | Proposed      35ms (RHUSP=223, S_p=4.60) | AHUS-P     3194 ms (HUSP=584536, S_p=5.18)
+      T=10 | Proposed      31ms (RHUSP=223, S_p=5.19) | AHUS-P     2782 ms (HUSP=584536, S_p=5.95)
+   SIGN (su=0.02 reg=0.02)
+      T=1  | Proposed      38ms (RHUSP=46, S_p=1.00) | AHUS-P     4830 ms (HUSP=905, S_p=1.00)
+      T=2  | Proposed      24ms (RHUSP=46, S_p=1.58) | AHUS-P     2385 ms (HUSP=905, S_p=2.03)
+      T=4  | Proposed      16ms (RHUSP=46, S_p=2.38) | AHUS-P     1203 ms (HUSP=905, S_p=4.01)
+      T=8  | Proposed      14ms (RHUSP=46, S_p=2.71) | AHUS-P      830 ms (HUSP=905, S_p=5.82)
+      T=10 | Proposed      11ms (RHUSP=46, S_p=3.45) | AHUS-P      728 ms (HUSP=905, S_p=6.63)
+
+🎉 HOÀN THÀNH [FULL]. Kết quả trong results/
