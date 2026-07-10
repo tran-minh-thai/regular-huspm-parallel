@@ -1,0 +1,11 @@
+🚀 SUITE [FULL2] — warmup=1, đo=3 (trung vị), maxThreads=10
+>>> Làm nóng JVM...
+
+>>> SC2: TĂNG TỐC THEO SỐ LUỒNG (S_p, E_p)...
+   BIBLE (su=0.01 reg=0.02)
+      T=1  |     1940 ms | mẫu=574 | S_p=1.00 | E_p=1.00
+      T=2  |     1010 ms | mẫu=574 | S_p=1.92 | E_p=0.96
+      T=4  |      534 ms | mẫu=574 | S_p=3.63 | E_p=0.91
+      T=8  |      370 ms | mẫu=574 | S_p=5.24 | E_p=0.66
+      T=10 |      343 ms | mẫu=574 | S_p=5.66 | E_p=0.57
+   FIFA (su=0.04 reg=0.05)
