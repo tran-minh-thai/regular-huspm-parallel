@@ -128,8 +128,16 @@ public class RunTauSensitivity {
         a.label = label + "_tau" + tau;
         a.runAlgorithm(seq, eui, outDir, label, su, reg);
         double rt = (a.endTimestamp > 0 ? a.endTimestamp : System.currentTimeMillis()) - a.startTimestamp;
-        System.gc();
-        Thread.sleep(150);
-        return new double[]{rt, a.getPatternCount(), a.getPeakMemoryMB()};
+        double pat = a.getPatternCount(), mem = a.getPeakMemoryMB();
+
+        // Hardened hand-over to the next measured run. A heavy dataset allocates several gigabytes per
+        // run; if that garbage is still around when the next run starts, a full collection can fire in
+        // the middle of it and appear as an outlier. The only reference to the run's structures is
+        // dropped first -- while 'a' is still reachable, System.gc() cannot reclaim its arrays -- and a
+        // few explicit full collections then return the heap to a clean baseline deterministically.
+        // This settling is not part of the measured runtime, which is taken from the timestamps above.
+        a = null;
+        for (int i = 0; i < 3; i++) { System.gc(); Thread.sleep(200); }
+        return new double[]{rt, pat, mem};
     }
 }
