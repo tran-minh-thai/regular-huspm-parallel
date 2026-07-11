@@ -31,6 +31,11 @@ public class RunTauSensitivity {
         // Datasets whose runtime is only a few tens of milliseconds sit at the resolution of the
         // timer; raise SC7_ITERS to tighten the reported spread on those.
         int iters = Integer.parseInt(System.getenv().getOrDefault("SC7_ITERS", "3"));
+        // Discarded runs performed when a new dataset starts, to absorb the transition between
+        // datasets: the JIT re-profiles and the GC ergonomics adapt to a different working set, so
+        // the first configuration of a dataset was seen to spread over 100% while every later one
+        // stayed near 1%. Raise SC7_DS_WARMUP for even heavier working sets.
+        int dsWarmup = Integer.parseInt(System.getenv().getOrDefault("SC7_DS_WARMUP", "2"));
         String resultsDir = "results";
         new File(resultsDir).mkdirs();
 
@@ -57,8 +62,8 @@ public class RunTauSensitivity {
         csv.println("dataset,su,reg,threads,tau,median_ms,min_ms,max_ms,spread_pct,patterns,peak_MB");
         raw.println("dataset,su,reg,threads,tau,iteration,runtime_ms,patterns,peak_MB");
 
-        System.out.printf("[SC7] tau sensitivity | T=%d | warmup=%d measure=%d (median) | taus=%s%n",
-                T, warmup, iters, Arrays.toString(TAUS));
+        System.out.printf("[SC7] tau sensitivity | T=%d | dataset-warmup=%d | tau-warmup=%d measure=%d (median) | taus=%s%n",
+                T, dsWarmup, warmup, iters, Arrays.toString(TAUS));
         sum.printf("== [FULL] SC7 tau sensitivity (T=%d, warmup=%d, median of %d) ==%n", T, warmup, iters);
 
         for (String ds : targets) {
@@ -70,6 +75,14 @@ public class RunTauSensitivity {
             }
             double su = all.get(ds)[0], reg = all.get(ds)[1];
             System.out.printf("%n>>> %s (su=%s reg=%s)%n", ds, su, reg);
+            // Settle the JVM into this dataset before any measurement. These runs are discarded and
+            // written to no file; they exist only to pay the one-off cost of switching datasets so it
+            // does not fall on the first measured configuration.
+            if (dsWarmup > 0) {
+                System.out.printf("    warming up for %s (%d discarded run%s)...%n",
+                        ds, dsWarmup, dsWarmup > 1 ? "s" : "");
+                for (int w = 0; w < dsWarmup; w++) runOnce(seq, eui, resultsDir, ds, su, reg, T, 64);
+            }
             sum.printf("%n%s (su=%s reg=%s)%n", ds, su, reg);
             sum.printf("%-6s %-12s %-9s %-9s %-11s %-10s %-8s%n",
                     "tau", "median_ms", "min_ms", "max_ms", "spread_pct", "patterns", "peak_MB");

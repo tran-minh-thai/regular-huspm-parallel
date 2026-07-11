@@ -139,7 +139,10 @@ SC7_ITERS=11 java ... test.RunTauSensitivity LEVIATHAN                  # more r
 ```
 
 `SC7_ITERS` sets the number of measured runs and defaults to three. Datasets whose runtime is only
-a few tens of milliseconds sit at the resolution of the timer, so raise it for those.
+a few tens of milliseconds sit at the resolution of the timer, so raise it for those. `SC7_DS_WARMUP`
+sets how many discarded runs precede each dataset (default two); they absorb the one-off cost of
+switching datasets, which the JIT and the garbage collector otherwise charge to the first measured
+configuration of the new dataset.
 
 The JVM options default to `-Xms8g -Xmx24g -Xss64m` and can be overridden. On a machine with less
 memory, lower `-Xmx`; FIFA and SYN need roughly 5 GB and 8 GB of heap respectively.
