@@ -1,37 +1,37 @@
-== [FULL] SC7 tau sensitivity (T=10, warmup=1, median of 3) ==
+== [FULL] SC7 tau sensitivity (T=10, warmup=1, median of 7) ==
 
 BIBLE (su=0.01 reg=0.02)
-tau    median_ms    patterns   peak_MB 
-16     305          574        439     
-32     296          574        439     
-64     297          574        439     
-128    301          574        455     
-256    295          574        439     
-max deviation vs tau=64: 1.3% over [32,128], 2.7% over [16,256]
+tau    median_ms    min_ms    max_ms    spread_pct  patterns   peak_MB 
+16     301          296       320       8.0         574        439     
+32     301          299       311       4.0         574        439     
+64     302          293       311       6.0         574        455     
+128    304          294       307       4.3         574        439     
+256    299          298       304       2.0         574        439     
+max deviation vs tau=64: 0.7% over [32,128], 1.0% over [16,256]
 
 FIFA (su=0.04 reg=0.05)
-tau    median_ms    patterns   peak_MB 
-16     25896        123        4938    
-32     25593        123        4938    
-64     25850        123        4938    
-128    26447        123        4938    
-256    26459        123        4938    
-max deviation vs tau=64: 2.3% over [32,128], 2.4% over [16,256]
+tau    median_ms    min_ms    max_ms    spread_pct  patterns   peak_MB 
+16     25960        25767     26266     1.9         123        4939    
+32     26508        26097     30364     16.1        123        4938    
+64     26255        26141     26406     1.0         123        4938    
+128    26283        26174     26716     2.1         123        4938    
+256    26323        26174     26530     1.4         123        4938    
+max deviation vs tau=64: 1.0% over [32,128], 1.1% over [16,256]
 
 LEVIATHAN (su=0.0015 reg=0.01)
-tau    median_ms    patterns   peak_MB 
-16     32           240        87      
-32     35           240        71      
-64     34           240        71      
-128    34           240        71      
-256    33           240        71      
-max deviation vs tau=64: 2.9% over [32,128], 5.9% over [16,256]
+tau    median_ms    min_ms    max_ms    spread_pct  patterns   peak_MB 
+16     33           32        34        6.1         240        71      
+32     34           33        35        5.9         240        71      
+64     33           32        35        9.1         240        71      
+128    33           32        34        6.1         240        71      
+256    34           32        35        8.8         240        87      
+max deviation vs tau=64: 3.0% over [32,128], 3.0% over [16,256]
 
 C8T1S5I8N5K (su=2.0E-5 reg=0.1)
-tau    median_ms    patterns   peak_MB 
-16     1362         461588     7322    
-32     1393         461588     7321    
-64     1486         461588     7318    
-128    1479         461588     7303    
-256    1514         461588     7305    
-max deviation vs tau=64: 6.3% over [32,128], 8.3% over [16,256]
+tau    median_ms    min_ms    max_ms    spread_pct  patterns   peak_MB 
+16     1347         1337      1369      2.4         461588     7319    
+32     1377         1362      1384      1.6         461588     7323    
+64     1498         1399      1531      8.8         461588     7318    
+128    1589         1493      1628      8.5         461588     7303    
+256    1632         1517      1714      12.1        461588     7308    
+max deviation vs tau=64: 8.1% over [32,128], 10.1% over [16,256]
